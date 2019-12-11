@@ -3,6 +3,9 @@ $(function()
 
 	$("#btn_add_course").click(function()
 	{
+		clearErrors();
+		$("#form_course")[0].reset();
+		$("#course_img_path").attr("src", "");
 		$("#modal_course").modal();
 	});
 
@@ -35,4 +38,33 @@ $(function()
 	{
 		uploadImg($(this), $("#service_img_path"), $("#service_img"));
 	});
+
+	$("#forn_course").submit(function() 
+	{
+		$.ajax(
+		{
+			type: "POST",
+			url: BASE_URL + "restrict/ajax_save_course",
+			dataType: "json",
+			data: $(this).serialize(),
+			beforeSend: function()
+			{
+				clearErrors();
+				$("#btn_save_course").siblings(".help-block").html(loadingImg("Verificando..."));
+			},
+			success: function(response)
+			{
+				clearErrors();
+				if (response["status"])
+				{
+					$("#modal_course").modal("hide");
+				}
+				else
+				{
+					showErrorsModal(response["error_list"]);
+				}
+			}
+		})
+		return false;
+	})
 })

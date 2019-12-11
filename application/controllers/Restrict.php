@@ -176,7 +176,7 @@ class Restrict extends CI_Controller
 			}
 		}
 		
-		if (empty($json["error_list"]))
+		if (!empty($json["error_list"]))
 		{
 			$json["status"] = 0;
 		}
